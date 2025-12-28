@@ -10,20 +10,25 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: "var(--font-vazir)",
-        serif: "var(--font-lalezar)",
+        serif: "var(--font-vazir)", // Using Vazirmatn for consistent typography
       },
       colors: {
-        love: {
-          50: "#fff1f2",
-          100: "#ffe4e6",
-          200: "#fecdd3",
-          300: "#fda4af",
-          400: "#fb7185",
-          500: "#f43f5e",
-          600: "#e11d48",
-          700: "#be123c",
-          800: "#9f1239",
-          900: "#881337",
+        nostalgia: {
+          bg: "#F5F2EA", // Warm cream/beige
+          gold: "#D4AF37", // Deep amber/gold
+          wood: "#4A3728", // Dark brown
+          green: "#2C3E2E", // Deep forest green
+          sepia: "#8B7355", // Soft vintage overlay
+          50: "#FAF9F5",
+          100: "#F0ECE2",
+          200: "#E2D9C8",
+          300: "#D4AF37", // Matching gold
+          400: "#B8860B", // Dark goldenrod
+          500: "#8B4513", // Saddle brown
+          600: "#4A3728", // Matching wood
+          700: "#3D2B1F",
+          800: "#2C3E2E", // Matching green
+          900: "#1A251B",
         },
       },
       borderRadius: {

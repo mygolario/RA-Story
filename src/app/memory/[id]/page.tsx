@@ -15,98 +15,121 @@ export default async function MemoryPage({ params }: { params: Promise<{ id: str
   }
 
   const images = (memory.images ? (typeof memory.images === 'string' ? JSON.parse(memory.images) : memory.images) : []) as any[];
+  const coverImage = images.length > 0 ? images[0].url : null;
 
   return (
-    <div className="min-h-screen bg-love-50/30">
+    <div className="min-h-screen bg-nostalgia-bg pb-20">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-30 p-4 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-white/50 shadow-sm">
+      <nav className="fixed top-0 w-full z-50 p-4 transition-all duration-300 bg-nostalgia-bg/80 backdrop-blur-md border-b border-nostalgia-wood/10">
         <div className="max-w-5xl mx-auto flex justify-between items-center">
           <Link 
             href="/memories" 
-            className="flex items-center gap-2 text-love-800/70 hover:text-love-900 transition-colors font-medium px-3 py-1.5 rounded-full hover:bg-love-50"
+            className="flex items-center gap-2 text-nostalgia-wood/70 hover:text-nostalgia-wood transition-colors font-serif font-bold px-4 py-2 rounded-full hover:bg-nostalgia-wood/5"
           >
             <ArrowRight size={20} />
-            <span className="hidden sm:inline">بازگشت به آلبوم</span>
+            <span className="hidden sm:inline pt-1">بازگشت به آلبوم</span>
           </Link>
           <Link 
             href={`/memory/${id}/edit`} 
-            className="flex items-center gap-2 text-love-600 hover:text-white border border-love-200 hover:bg-love-500 font-medium px-4 py-1.5 rounded-full transition-all"
+            className="flex items-center gap-2 text-nostalgia-wood hover:text-nostalgia-bg border border-nostalgia-wood hover:bg-nostalgia-wood font-medium px-5 py-2 rounded-full transition-all"
           >
             <Edit2 size={16} />
-            <span>ویرایش</span>
+            <span className="font-serif pt-1">ویرایش خاطره</span>
           </Link>
         </div>
       </nav>
 
-      <main className="pt-24 pb-12 px-4 max-w-5xl mx-auto animate-fade-in">
-        <article className="bg-white rounded-[2.5rem] shadow-xl shadow-love-100/50 overflow-hidden border border-white">
+      {/* Hero Section */}
+      <div className="relative h-[60vh] sm:h-[70vh] w-full overflow-hidden">
+        {coverImage ? (
+            <>
+                <div className="absolute inset-0 bg-nostalgia-wood/20 mix-blend-multiply z-10" />
+                <div className="absolute inset-0 bg-linear-to-t from-nostalgia-bg via-transparent to-transparent z-20" />
+                <img 
+                    src={coverImage} 
+                    alt={memory.title} 
+                    className="w-full h-full object-cover filter sepia-[0.3] contrast-[0.9]"
+                />
+            </>
+        ) : (
+             <div className="w-full h-full bg-nostalgia-wood/5 flex items-center justify-center">
+                <Heart size={64} className="text-nostalgia-wood/20" />
+             </div>
+        )}
+        
+        {/* Title Overlay */}
+        <div className="absolute bottom-0 left-0 right-0 z-30 p-8 sm:p-16 text-center">
+            <h1 className="text-5xl sm:text-7xl font-serif font-bold text-nostalgia-wood drop-shadow-lg mb-6 leading-tight">
+                {memory.title}
+            </h1>
             
-            {/* Header Content */}
-            <div className="p-8 sm:p-12 text-center border-b border-love-50 bg-linear-to-b from-love-50/50 to-transparent">
-                <div className="flex flex-wrap items-center justify-center gap-3 text-sm font-medium mb-6">
-                    <div className="px-4 py-1.5 bg-white rounded-full text-love-700 shadow-sm border border-love-100 flex items-center gap-2">
-                        <Calendar size={16} />
-                        {format(new Date(memory.date), 'd MMMM yyyy')}
-                    </div>
-                    {memory.location && (
-                        <div className="px-4 py-1.5 bg-white rounded-full text-gray-600 shadow-sm border border-gray-100 flex items-center gap-2">
-                            <MapPin size={16} />
+            <div className="flex flex-wrap items-center justify-center gap-4 text-sm font-medium font-mono uppercase tracking-widest text-nostalgia-wood/80">
+                <div className="flex items-center gap-2">
+                    <Calendar size={14} />
+                    {format(new Date(memory.date), 'd MMMM yyyy')}
+                </div>
+                {memory.location && (
+                    <>
+                        <span>•</span>
+                        <div className="flex items-center gap-2">
+                            <MapPin size={14} />
                             {memory.location}
                         </div>
-                    )}
-                    {memory.mood && (
-                        <div className="px-4 py-1.5 bg-rose-100 text-rose-700 rounded-full shadow-sm flex items-center gap-1.5">
-                            <Heart size={14} fill="currentColor" />
-                            {memory.mood}
-                        </div>
-                    )}
-                </div>
-
-                <h1 className="text-4xl sm:text-6xl font-serif font-bold text-gray-900 leading-tight mb-4">
-                    {memory.title}
-                </h1>
-            </div>
-
-            {/* Gallery */}
-            {images.length > 0 && (
-                <div className="p-6 md:p-8 -mt-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-[300px]">
-                        {images.map((img, idx) => (
-                            <div 
-                                key={idx} 
-                                className={`relative group rounded-3xl overflow-hidden shadow-md ${
-                                    idx === 0 ? 'md:col-span-2 md:row-span-2 md:h-[616px]' : ''
-                                }`}
-                            >
-                                <img 
-                                    src={img.url} 
-                                    alt={img.caption || memory.title} 
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
-                                />
-                                {img.caption && (
-                                    <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/70 via-black/30 to-transparent p-6 text-white text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                        <p className="font-medium text-lg leading-relaxed">{img.caption}</p>
-                                    </div>
-                                )}
-                            </div>
-                        ))}
+                    </>
+                )}
+                {memory.mood && (
+                    <div className="px-3 py-1 bg-nostalgia-wood/10 rounded-full border border-nostalgia-wood/20 flex items-center gap-2">
+                        <Heart size={12} fill="currentColor" />
+                        {memory.mood}
                     </div>
-                </div>
-            )}
+                )}
+            </div>
+        </div>
+      </div>
 
+      <main className="max-w-4xl mx-auto px-6 -mt-10 relative z-40">
+        <article className="bg-[#FAF9F6] p-8 sm:p-16 shadow-2xl shadow-nostalgia-wood/10 border border-nostalgia-wood/5 relative">
+            {/* Paper Texture Overlay */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] mix-blend-multiply" />
+            
             {/* Content */}
-            <div className="px-8 sm:px-16 py-10 max-w-4xl mx-auto">
-                <div className="flex justify-center mb-8 text-love-200">
-                    <Heart size={32} />
+            <div className="relative">
+                <div className="flex justify-center mb-12 text-nostalgia-gold">
+                    <Heart size={24} fill="currentColor" className="opacity-80" />
                 </div>
+                
                 <div 
-                    className="prose prose-lg prose-rose max-w-none font-serif text-gray-700 leading-loose text-justify"
+                    className="prose prose-xl prose-stone max-w-none font-serif text-nostalgia-wood leading-loose text-justify first-letter:text-5xl first-letter:font-bold first-letter:text-nostalgia-gold first-letter:float-right first-letter:ml-3"
                     dangerouslySetInnerHTML={{ __html: memory.content }}
                 />
+
+                {/* Additional Images Grid */}
+                {images.length > 1 && (
+                    <div className="mt-16 pt-12 border-t border-nostalgia-wood/10">
+                        <h3 className="text-center font-serif text-xl text-nostalgia-wood/60 mb-8 tracking-widest uppercase">Other Moments</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            {images.slice(1).map((img, idx) => (
+                                <div key={idx} className="relative group aspect-square bg-gray-100 overflow-hidden shadow-md rotate-1 hover:rotate-0 transition-transform duration-500 p-2 pb-8 bg-white" style={{borderRadius: '2px'}}>
+                                    <div className="w-full h-full relative overflow-hidden">
+                                        <div className="absolute inset-0 bg-nostalgia-wood/10 mix-blend-multiply z-10 pointer-events-none group-hover:opacity-0 transition-opacity" />
+                                        <img 
+                                            src={img.url} 
+                                            alt={img.caption || ''} 
+                                            className="w-full h-full object-cover filter sepia-[0.4] contrast-[0.9] group-hover:sepia-0 group-hover:contrast-100 transition-all duration-700"
+                                        />
+                                    </div>
+                                    {img.caption && (
+                                        <p className="absolute bottom-2 left-0 right-0 text-center font-serif text-xs text-gray-500">{img.caption}</p>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
             
-            <div className="bg-love-50/50 py-6 text-center text-sm text-love-400/80">
-                تاریخ ثبت: {format(new Date(memory.createdAt), 'yyyy/MM/dd')}
+            <div className="mt-16 text-center font-mono text-xs text-nostalgia-wood/30 tracking-widest uppercase">
+                ثبت شده در {format(new Date(memory.createdAt), 'yyyy/MM/dd')}
             </div>
         </article>
       </main>

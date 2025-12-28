@@ -26,47 +26,47 @@ export default function MemoryCard({ memory }: MemoryCardProps) {
   return (
     <Link 
       href={`/memory/${memory.id}`}
-      className="group block bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-love-200/50 transition-all duration-500 transform hover:-translate-y-1 border border-love-100"
+      className="group block relative bg-white p-3 pb-8 shadow-md hover:shadow-2xl hover:shadow-black/20 transition-all duration-500 transform hover:-translate-y-1 hover:rotate-1"
+      style={{ borderRadius: '2px' }}
     >
-      <div className="relative aspect-4/3 overflow-hidden">
+      {/* Tape Effect */}
+      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/30 backdrop-blur-sm rotate-2 shadow-xs z-10 border-l border-r border-white/40" />
+
+      {/* Image Frame */}
+      <div className="relative aspect-4/3 overflow-hidden bg-gray-100 mb-4 filter sepia-[0.3] group-hover:sepia-0 transition-all duration-700">
         {coverImage ? (
           <img 
             src={coverImage} 
             alt={memory.title} 
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center text-love-300 bg-love-50">
+          <div className="w-full h-full flex flex-col items-center justify-center text-nostalgia-gold/50 bg-nostalgia-bg">
             <Heart size={48} className="mb-2 opacity-50" />
-            <span className="text-sm font-medium">بدون تصویر</span>
+            <span className="text-sm font-serif">بدون تصویر</span>
           </div>
         )}
-        <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        
-        {memory.mood && (
-          <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-bold text-love-600 shadow-sm border border-love-100 flex items-center gap-1">
-            <Heart size={12} fill="currentColor" />
-            {memory.mood}
-          </div>
-        )}
+        <div className="absolute inset-0 ring-1 ring-black/5 inset-shadow-sm pointer-events-none" />
       </div>
       
-      <div className="p-5 relative">
-        <div className="absolute -top-6 left-4 bg-white p-3 rounded-2xl shadow-md border border-love-50 text-center min-w-[60px]">
-            <div className="text-xl font-bold text-love-600 leading-none mb-1">{format(date, 'd')}</div>
-            <div className="text-[10px] text-gray-500 font-medium uppercase">{format(date, 'MMMM')}</div>
-        </div>
-
-        <h3 className="text-2xl font-serif font-bold text-gray-800 mb-3 line-clamp-1 pt-2 group-hover:text-love-600 transition-colors">
+      {/* Handwritten-style Content */}
+      <div className="px-2 text-center relative">
+        <h3 className="text-xl font-serif font-bold text-nostalgia-wood mb-2 line-clamp-1 group-hover:text-nostalgia-wood/80 transition-colors">
           {memory.title}
         </h3>
         
-        {memory.location && (
-          <div className="flex items-center gap-1.5 text-sm text-gray-500 group-hover:text-love-500 transition-colors">
-            <MapPin size={16} />
-            <span className="line-clamp-1">{memory.location}</span>
-          </div>
-        )}
+        <div className="flex justify-center items-center gap-3 text-xs font-mono text-nostalgia-wood/60 uppercase tracking-widest">
+            <span>{format(date, 'd MMMM yyyy')}</span>
+            {memory.location && (
+                <>
+                    <span>•</span>
+                    <span className="flex items-center gap-1">
+                        <MapPin size={10} />
+                        <span className="line-clamp-1 max-w-[80px]">{memory.location}</span>
+                    </span>
+                </>
+            )}
+        </div>
       </div>
     </Link>
   );

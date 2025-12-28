@@ -1,10 +1,22 @@
 import type { Metadata } from 'next';
-// Google Fonts disabled due to potential network timeouts in local environment
-// import { Vazirmatn, Lalezar } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 
-// const vazirmatn = Vazirmatn({ subsets: ['arabic'], variable: '--font-vazir' });
-// const lalezar = Lalezar({ weight: '400', subsets: ['arabic'], variable: '--font-lalezar' });
+const vazirmatn = localFont({
+  src: [
+    {
+      path: '../fonts/Vazirmatn-Regular.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/Vazirmatn-Bold.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-vazir',
+});
 
 export const metadata: Metadata = {
   title: 'داستان ما',
@@ -18,7 +30,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa" dir="rtl">
-      <body className={`font-sans bg-gray-50 text-gray-900`}>
+      <body className={`${vazirmatn.variable} font-sans bg-nostalgia-bg text-nostalgia-wood overflow-x-hidden selection:bg-nostalgia-gold/30 selection:text-nostalgia-wood`}>
+        <div className="film-grain" />
+        <div className="vignette" />
         {children}
       </body>
     </html>
