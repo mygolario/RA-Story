@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Memory {
+  id        String   @id @default(uuid())
+  title     String
+  date      DateTime
+  location  String?
+  mood      String?
+  content   String
+  images    String   @default("[]")
+  // Actually, let's verify if Prisma supports Json on SQLite. Yes it does.
+  // Replacing 'String' with 'Json' if possible, or just stringifying it manually. 
+  // Standard practice for SQLite with Prisma is standard Json type, Prisma handles it.
+  // However, explicit JSON type is safer.
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
